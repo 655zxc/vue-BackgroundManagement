@@ -1,0 +1,52 @@
+2022.1.19
+
+P163-P169
+
+20.12.添加功能的保存操作
+    父组件点击添加
+    切换页面
+    通知子组件发送API获取需要的数据
+
+    整理参数 
+    发送API
+    回到SPU管理页面
+20.13.删除spu
+    发API 重新获取数据
+
+21.product模块-Spu模块:----展示添加SKU结构
+21.1.收集数据
+    点击添加sku
+    --对于展示的数据 发送API获得
+    父组件通知子组件sku发送请求获得数据,通过ref实现
+    存数据到data 展示这些数据
+    --对于要收集的数据 需要自己填写
+    第一类收集的数据：父组件给的数据
+    第二类：需要通过数据双向绑定v-model收集   
+    第三类：需要自己书写代码
+
+    对于不确定的表单数量 根据数据使用vfor生成多个表单 
+    这里的select的option也是vfor生成的 
+
+    怎么收集比较复杂的数据并存到data中?
+    例如,平台属性,有很多个选择,它是服务器发送回来的
+    v-model="attr.attrIdAndValueId" 把选择的项存在了数组attrInfoList的元素中
+    要收集的时候再去attrInfoList的元素中取出来
+    不必再去建一个新数组
+    也可以写一个事件,选择一个存一个?
+
+    表格多用作用域插槽 每一行都是这个表格绑定的data数组的一个元素
+
+    收集数据想怎么收集就怎么收集 只要最后点保存的时候 整理成接口要的参数就行了
+
+    增加字段,服务器返回的图片没有isdefault,需要手动为每张图片添加
+    这招是常用的 在数据的来源做修改
+
+21.2.保存操作
+    取消按钮 通知父组件进行操作
+
+    https://blog.csdn.net/qq_40052011/article/details/104442732
+    https://blog.csdn.net/weixin_34392906/article/details/94726850?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.pc_relevant_default&utm_relevant_index=1
+    使用this.$options.data()重置数据
+
+    整理收集到的数据到skuInfo里
+

@@ -1,0 +1,40 @@
+2021.12.20
+
+P125-P128
+
+4.路由搭建
+搭建商品product路由 
+和/一样 和login一样
+整个显示在app组件里
+product是一个一级路由
+[它的组件是layout]
+他会展示整个layout
+
+理解路由:login 404 / product 都是一级路由,会展示在app组件里
+/,product的组件是layout,因此会展示layout
+他们的子组件会展示在appmain里
+
+写完路由左栏就会出现相应按钮
+
+5.product模块-tradeMark模块:品牌管理基本功能
+使用组件table 和 pagination
+5.1.使用element写静态页面
+5.2.书写获取列表的API接口
+5.3.点击分页器触发事件,将分页器的数据作为参数,通过API获取列表(这里不用vuex),然后存数据到data
+*5.4.展示数据:
+    [这一步和项目一不同 这里用组件 而不是vfor遍历html]
+    表单data属性获取需要遍历的数组
+    表格获取数据后:data="data",每一列的某行展示的数据就是data[某行]的元素
+    element组件中,el-column按列展示组件,每个el-column负责一列
+    文字可以直接用prop = "文字" 解决
+    但是图片不行 以前用vfor遍历结构生成 结构里有img
+    这里需要用插槽给组件添加html结构 因此在插槽里写img结构
+    el-column有数据
+    可以通过作用域插槽获取组件传回来的数据
+    同样,添加按钮也用插槽 不需要数据 这里用默认插槽就可以了
+
+    [把el-column想成一个子组件 属性就是父组件要传给子组件的值 添加html时用插槽 就能理解了]
+    
+5.5.完成分页器点击事件,在事件中改变data中的page和limit的值
+遇到的bug:API中的get忘了加引号
+

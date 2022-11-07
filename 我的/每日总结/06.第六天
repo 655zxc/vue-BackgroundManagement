@@ -1,0 +1,78 @@
+2021.12.23
+
+P150-157
+
+18.product模块-Spu模块:结构分析
+    两个card
+    上边card三级联动
+    下边card在三种DIV中切换,这三种状态通过vshow切换,vshow参数是数字,不用布尔值(因为多于2个div)
+    ----展示SPU列表结构
+    ----添加SPU|修改SPU
+    ----展示添加SKU结构
+    为了简洁直观,可以把后两个组件写为子组件引入,缺点是
+
+19.product模块-Spu模块:----展示SPU列表结构
+    三级联动触发回调 获取参数 发API 获取数据 存data 展示
+    分页器改动 重新调整参数 ...
+    bug:又是接口问题,注意接口数据是一个对象,对象里的key必须对
+
+20.product模块-Spu模块:----添加SPU|修改SPU
+修改和添加都会打开相同的页面,数据都会存在data里,不同的是,修改会发送API获得点击选项的数据,并展示出来
+
+20.1.
+    按下添加/修改/取消按钮,切换页面
+    然后写这个模块的静态页面
+    element 表单怎么写 表格怎么写
+    整体是一个大表单,每一项都是一个表单项,
+    其中最后一个表单项有一个按钮,一个多选框,一个表格
+    表格里有几列
+20.2.SpuForm业务的分析
+    需要发送的API
+---品牌的数据需要发请求的            http://localhost:9529/dev-api/admin/product/baseTrademark/getTrademarkList
+---获取平台中全部的销售属性（3个）    http://localhost:9529/dev-api/admin/product/baseSaleAttrList
+---获取某一个SPU信息                 Request URL: http://localhost:9529/dev-api/admin/product/getSpuById/5092
+--获取SPU图片                        http://localhost:9529/dev-api/admin/product/spuImageList/5092
+20.3.修改功能:发送请求的时间
+    Spu组件发请求的时间:
+    不能放在mounted,因为v-show只是控制SpuForm子组件显示与隐藏，
+    这个子组件并没有卸载（只是显示或者隐藏），导致mounted只能执行一次。
+    知识点:在父组件中,通过ref获得子组件,就可以使用子组件的数据和方法(组件通信10)
+    因此,点击修改按钮,ref获取Spu模块,调用Spu组件的发请求方法,这种方法而且还可以向子组件传参
+    用全局总线也可以?
+20.4.修改功能:发送请求的实现并存data数据
+    问题:添加和修改都会用到data里的spu参数,修改是直接给spu赋值
+        但是添加不是,因此spu要有属性,否则添加的时候spu是个空对象,用不了
+        spu属性初始化的时候是一个空的对象,在修改SPU的时候，会向服务器发请求，返回SPU信息（对象），在修改的时候可以利用服务器返回的这个对象收集最新的数据提交给服务器
+        添加SPU，如果是添加SPU的时候并没有向服务器发请求，数据收集到哪里呀[SPU]，收集数据的时候有哪些字段呀，看文档
+
+        spu中的spuSaleAttrList是点击的spu的销售属性
+        saleAttrList是所有商品所有的销售属性
+20.5.展示数据(给组件绑定data数据)
+    label 名字
+    输入框vmodel 绑定需要输入的数据
+    总表单model 绑定整个表单要用的数据
+    总表格data 绑定表格要展示的数据
+    表格列prop 此列要展示的数据(数据来源于总表格的data)
+    选择框(option)value 选择项的值 一般绑定id , 然后select的vmodel可以收集到选择的option的value
+    upload照片墙也可以file-list绑定数据
+    
+    前面简单的部分直接省略
+
+    销售属性中
+    表格怎么展示属性 之前讲过了 作用域插槽
+    第三列需要用到tag组件
+    很像之前的span和input切换
+    需要给每个属性添加一个flag,不能共用一个flag
+    直接照着element改
+
+    然后是计算未选择的销售属性
+    在计算属性中
+    需要拿两个数组saleAttrList(所有的属性,如:颜色,尺寸,版本)和spu.spuSaleAttrList(当前spu的属性,如:颜色)比较
+    找spu.spuSaleAttrList中没有的属性
+    filter遍历saleAttrList的元素X(颜色,尺寸,版本)
+    如果这个元素X在spu.spuSaleAttrList中没有,即用every方法把spu.spuSaleAttrList的所有元素和X都不相等
+    返回true 
+    最终得到一个过滤的数组
+    其实两个for循环也能做出来?
+20.6.收集数据
+    一部分数据已经在20.5中收集了

@@ -1,0 +1,65 @@
+2021.12.22
+
+P138-P149 
+
+12.product模块-Attr模块:添加/修改属性功能
+12.1.点击添加/修改,隐藏表格,显示添加/修改页面,通过vshow实现
+12.2.实现添加属性值功能:
+    利用data收集数据,添加按钮会往属性值数组里添加一个对象,
+    使用attrInfo.attrValueList作为表格数据,表格会遍历数组展示数据
+    表格的input用插槽实现,并且这个input会vmodel绑定row.XX数据,这个row就来源于刚刚添加的对象
+12.3.点击添加属性,会清空之前的data的数据,并收集id
+
+12.4.实现修改功能:
+     传递点击行的row数据,将row赋值给数据
+     但有个问题,不能直接赋值,否则attrInfo,row两者同地址,修改attrInfo也会修改row
+     如果修改attrInfo但不保存而是点击取消,发现本地row被改了,表格数据变了
+     而且这里由于数组套对象不能用浅拷贝,需要深拷贝
+
+13.product模块-Attr模块:属性值的查看模式和修改模式切换(input和span切换)
+13.1.通过添加属性值按钮展示的页面    
+    通过vif和事件完成,并且在数组中添加flag属性作为vif的值
+    input的失焦和span的点击会触发函数
+    判断输入是否合法
+    合法则改变flag,触发vif,实现切换
+13.2.通过修改按钮展示的页面
+    点击修改按钮,不仅深拷贝,还要添加一个flag属性
+    注意:不能直接 XX.flag = false 这样添加的数据不是响应式的 
+    没有get set 导致不会视图更新
+    应该使用vm.$set
+    而之前给data添加数据用的push({}),同理
+*13.3.点击span自动聚焦相应的input
+    给input打上:ref="$index",点击span获取相应的input
+    注意1:index是个变量,不可以用this.$refs.index
+         要用this.$refs[index]
+    注意2:input和span切换时,会有dom的上树和下树,
+          页面重绘重排,消耗很多时间,不能立即得到this.$refs[index]
+          需要使用this.$nextTick(()=>{})
+    添加属性值自动聚焦:找到数组最后一个索引
+
+14.product模块-Attr模块:删除属性值
+    使用popconfirm,确认删除时splice数组的元素
+    问题:template不加上slot-scope 气泡框不弹出来?为什么?
+    注意:element文档的版本和自己package里的版本
+
+15.product模块-Attr模块:添加/修改的保存功能
+    需求:提交数据不应该有值为空的,并且不应该有flag属性(flag是一个临时用的值)
+        使用filter方法过滤数组,获得可以作为参数的attrInfo,发送API
+        设置disabled 没有属性值(当数组长度小于1) 不可使用
+
+    注:既然 JavaScript 数组属于对象，其中的元素就可以使用 JavaScript delete 运算符来删除
+       使用 delete 会在数组留下未定义的空洞。请使用 pop() 或 shift() 取而代之
+       splice() 在数组中不留“空洞”的情况下移除元素
+
+16.product模块-Attr模块:添加属性时,三级联动不可使用
+    父子isshowtable传值
+
+17.product模块-Spu模块:介绍
+    SPU你可以理解为类
+    People类【SPU】
+    实例:【SKU】
+    小明:小明  18  男 等等
+    小红：小红  18  女 等等
+
+
+    

@@ -1,0 +1,60 @@
+2021.12.21
+
+P129-P137
+
+6.product模块-tradeMark模块:添加的功能实现
+使用dialog upload form组件
+dialog通过设置属性为true来弹出
+对话框中有一个表单和一个底部按钮 表单有一个输入框和一个上传组件
+配置相应的data数据和methods方法
+6.1.书写添加品牌API接口
+6.2.element组件相关操作,收集表单数据
+6.3.给确定绑定事件,通过API,携带参数(6.2收集的数据)发送请求,(无返回值),重新获取数据
+6.4.清空数据
+
+7.product模块-tradeMark模块:修改的功能实现
+7.1.给按钮绑定点击事件,按钮是写在列的作用域插槽里的,因此可以使用传回来的参数row,修改数据需要得到row
+    事件需要传参row,row是data[这一行]的数据
+7.2.写API
+7.3.发API
+注:发送添加,修改的API都写在了确定按钮的事件中,添加按钮和修改按钮只有显示对话框和获取数据的功能
+
+8.product模块-tradeMark模块:添加和修改的表单验证
+Form 组件提供了表单验证的功能，只需要通过 rules 属性传入约定的验证规则，
+并将 Form-Item 的 prop 属性设置为需校验的字段名即可。校验规则参见 async-validator
+
+只要表单验证通过了,才能添加/修改商品
+因此在addOrUpdateTradeMarkList里先判断是否通过验证 再发API
+
+9.product模块-tradeMark模块:删除的功能实现
+9.1.绑定点击事件,使用messagebox,调用$confirm方法即可打开消息提示,不需要写html
+    element组件有自定义组件,写在html中,也有this.$message/$confirm这种弹框,写在js代码中
+9.2.写API
+9.3.在9.1中的confirm里发送API
+注:检查bug,发现发送API有错,有可能是API写错了
+
+10.product模块-Attr模块:全局组件-三级联动表单
+10.1.结构:两个card组件,第一个card里是一个全局组件三级联动
+10.2.全局组件:三级联动
+    内容是表单
+10.3.实现表单思路:
+    设置data数据存放api返回的数据,以及当前各级选择的id
+    vmodel绑定form.categoryId1,这样选择项的value就是form.categoryId1
+    写三级联动的API,根据data里存的id发送,vfor展示
+    注意表单的value vmodel设置
+10.4.细节:
+    (1)更换一级分类选项,清除后续选项
+10.5.传递数据:attr需要展示数据,因此需要让三级联动这个子组件自定义事件子传父
+     在第三级分类改变后传递
+问题:为什么element组件的原生事件不加.native??
+注意:自定义this.$emit 全局this.$bus.$emit
+
+11.product模块-Attr模块:展示数据
+11.1.得到API返回的数据
+11.2.使用表格展示数据,步骤同5.4
+    其中第三列,想要在一个单元格里展示数组的内容
+    使用插槽,vfor遍历这个数组
+    第四列也是用插槽插入按钮
+
+
+    

@@ -1,0 +1,28 @@
+2021.12.17
+
+P123-P124
+
+1.配置代理服务器
+http://39.98.123.211需要在代理服务器里配置
+proxy: {
+      '/dev-api': {
+        target: 'http://39.98.123.211',
+        pathRewrite: { '^/dev-api': '' },
+      },
+    },
+
+接口详细/admin/acl/index/info写在封装的axios的url里
+
+baseurl可写可不写
+
+2.
+一级路由:App里展示的页面,如login页面,layout页面
+二级路由:Appmain里展示的页面,如dashboard页面
+
+二级路由都是写在一级路由的children里的
+
+3.项目结构
+
+APP下有login和layout,layout下有三个子组件
+
+分清路由和组件的区别啊
